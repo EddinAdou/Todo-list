@@ -77,10 +77,10 @@ function renderTasks() {
             </div>
           </div>
         </div>
-      ;
+      `;
   });
 
-  tasksWrapper.innerHTML += 
+  tasksWrapper.innerHTML += `
      <div class="delete">
           <ion-icon name="trash-outline"></ion-icon>
         </div>`;
@@ -152,7 +152,7 @@ addTaskForm.addEventListener("submit", (e) => {
     time = timeElem.value;
   //validation
   if (title === "" || description === "" || date === "" || time === "") {
-    //si rien n'est vide
+    //if anything empty
     alert("Veuillez remplir tous les champs");
   }
 

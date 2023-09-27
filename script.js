@@ -1,60 +1,57 @@
 document.addEventListener("DOMContentLoaded", function () {
-const labels = document.querySelectorAll(".add-wrapper label");
+  const labels = document.querySelectorAll(".add-wrapper label");
 
-labels.forEach((label) => {
-  let input = label.querySelector("input");
-  let span = label.querySelector("span");
-  input.addEventListener("change", () => {
-    span.innerHTML = input.value;
+  labels.forEach((label) => {
+    let input = label.querySelector("input");
+    let span = label.querySelector("span");
+    input.addEventListener("change", () => {
+      span.innerHTML = input.value;
+    });
   });
-});
 
-let tasksArr = [
-  {
-    title: "Tâche 1",
-    description: "Description de la tâche",
-    date: "23 Jan 2023",
-    time: "13:30",
-  },
-  {
-    title: "Tâche 2",
-    description: "Description de la tâche",
-    date: "23 Mai 2023",
-    time: "10:10",
-  },
-  {
-    title: "Tâche 3",
-    description: "Description de la tâche",
-    date: "23 Jui 2023",
-    time: "8:50",
-  },
-  {
-    title: "Tâche 4",
-    description: "Description de la tâche",
-    date: "22 Jul 2023",
-    time: "16:30",
-  },
-];
-const tasksWrapper = document.querySelector(".tasks-wrapper");
+  let tasksArr = [
+    {
+      title: "Tâche 1",
+      description: "Description de la tâche",
+      date: "23 Jan 2023",
+      time: "13:30",
+    },
+    {
+      title: "Tâche 2",
+      description: "Description de la tâche",
+      date: "23 Mai 2023",
+      time: "10:10",
+    },
+    {
+      title: "Tâche 3",
+      description: "Description de la tâche",
+      date: "23 Jui 2023",
+      time: "8:50",
+    },
+    {
+      title: "Tâche 4",
+      description: "Description de la tâche",
+      date: "22 Jul 2023",
+      time: "16:30",
+    },
+  ];
 
-function renderTasks() {
-  tasksWrapper.innerHTML = "";
+  const tasksWrapper = document.querySelector(".tasks-wrapper");
 
-  //tache vide
-  if (tasksArr.length === 0) {
-    tasksWrapper.innerHTML = `<div class="no-tasks">Pas de tâches, en ajouter une maintenant</div>`;
-    return;
-  }
+  function renderTasks() {
+    tasksWrapper.innerHTML = "";
 
-  //si les taches ont des taches
+    if (tasksArr.length === 0) {
+      tasksWrapper.innerHTML = `<div class="no-tasks">Pas de tâches, en ajouter une maintenant</div>`;
+      return;
+    }
 
-  tasksArr.forEach((task) => {
-    //voir si expiré
-    let expired;
-    expired = checkExpired(task) ? "expired" : "";
+    tasksArr.forEach((task) => {
+      let expired;
+      expired = checkExpired(task) ? "expired" : "";
 
-    tasksWrapper.innerHTML += `
-              <div class="task">
+      tasksWrapper.innerHTML += `
+        <div class="task">
           <div class="left">
             <div class="radio">
               <ion-icon class="icon" name="checkmark"></ion-icon>
@@ -79,123 +76,74 @@ function renderTasks() {
           </div>
         </div>
       `;
-  });
+    });
 
-  tasksWrapper.innerHTML += `
+    tasksWrapper.innerHTML += `
      <div class="delete">
           <ion-icon name="trash-outline"></ion-icon>
         </div>`;
 
-  //ajouter des listes d'événements
+    const tasks = document.querySelectorAll(".task");
 
-  const tasks = document.querySelectorAll(".task");
-
-  tasks.forEach((task) => {
-    task.addEventListener("click", (e) => {
-      //si la radio est selectonnée
-      if (e.target.classList.contains("radio")) {
-        task.classList.toggle("selected");
-        //afficher le bouton de suppression lorsqu'au moins une tâche est sélectionnée
-        if (document.querySelector(".task.selected")) {
-          document.querySelector(".delete").classList.add("show");
-        } else {
-          document.querySelector(".delete").classList.remove("show");
+    tasks.forEach((task) => {
+      task.addEventListener("click", (e) => {
+        if (e.target.classList.contains("radio")) {
+          task.classList.toggle("selected");
+          if (document.querySelector(".task.selected")) {
+            document.querySelector(".delete").classList.add("show");
+          } else {
+            document.querySelector(".delete").classList.remove("show");
+          }
         }
-      }
+      });
     });
-  });
 
-  //En cas de suppression, retirer la tâche de l'arrangement et la restituer
-  const deleteBtn = document.querySelector(".delete");
-  deleteBtn.addEventListener("click", deleteTasks);
-}
-
-renderTasks();
-
-function checkExpired(task) {
-  let date = new Date(task.date);
-  let time = new Date(task.time);
-  let now = new Date();
-  if (date < now || time < now) {
-    return true;
+    const deleteBtn = document.querySelector(".delete");
+    deleteBtn.addEventListener("click", deleteTasks);
   }
-  return false;
 
-  //true si la date ou l'heure actuelle est inférieure signifie que la tâche n'est pas encore terminée
-}
+  renderTasks();
 
-function deleteTasks() {
-  const selectedTasks = document.querySelectorAll(".task.selected");
-  if (selectedTasks.length === 0) return;
-  //si on selectionne des tâches
-  let confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer les tâches sélectionnées?");
-  if (confirmDelete) {
-    selectedTasks.forEach((task) => {
-      //Obtenir le titre de la tâche et filtrer les tâches correspondantes
-      let title = task.querySelector(".title").innerHTML;
-      tasksArr = tasksArr.filter((task) => task.title !== title);
-    });
-    renderTasks();
-  }
-}
-
-const addTaskForm = document.getElementById("add-task-form"),
-  titleElem = document.getElementById("title"),
-  descriptionElem = document.getElementById("description"),
-  dateElem = document.getElementById("date"),
-  timeElem = document.getElementById("time");
-
-document.addEventListener("DOMContentLoaded", function () {
-  
-
-  const addTaskButton = document.querySelector(".btn.add");
-
-  addTaskButton.addEventListener("click", (e) => {
-    e.preventDefault(); // Empêche le formulaire de se soumettre
-
-    let title = titleElem.value,
-      description = descriptionElem.value,
-      date = dateElem.value,
-      time = timeElem.value;
-    
-    // Validation
-    if (title === "" || description === "" || date === "" || time === "") {
-      alert("Veuillez remplir tous les champs");
-      return; // Arrêtez la fonction ici si un champ est vide
+  function checkExpired(task) {
+    let date = new Date(task.date);
+    let time = new Date(task.time);
+    let now = new Date();
+    if (date < now || time < now) {
+      return true;
     }
+    return false;
+  }
 
-    let task = {
-      title,
-      description,
-      date,
-      time,
-    };
+  function deleteTasks() {
+    const selectedTasks = document.querySelectorAll(".task.selected");
+    if (selectedTasks.length === 0) return;
+    let confirmDelete = confirm("Êtes-vous sûr de vouloir supprimer les tâches sélectionnées?");
+    if (confirmDelete) {
+      selectedTasks.forEach((task) => {
+        let title = task.querySelector(".title").innerHTML;
+        tasksArr = tasksArr.filter((task) => task.title !== title);
+      });
+      renderTasks();
+    }
+  }
 
-    // Envoi
-    tasksArr.push(task);
+  const addTaskForm = document.getElementById("add-task-form"),
+    titleElem = document.getElementById("title"),
+    descriptionElem = document.getElementById("description"),
+    dateElem = document.getElementById("date"),
+    timeElem = document.getElementById("time");
 
-    // Rerender la liste des tâches
-    renderTasks();
-
-    // Effacer les champs après l'ajout
-    clear();
-  });
-  
   const addTaskButton = document.querySelector(".btn.add");
 
   addTaskButton.addEventListener("click", (e) => {
     e.preventDefault();
-    // Empêche le formulaire de se soumettre
-
     let title = titleElem.value,
       description = descriptionElem.value,
       date = dateElem.value,
       time = timeElem.value;
-    
-    // Validation
     if (title === "" || description === "" || date === "" || time === "") {
       alert("Veuillez remplir tous les champs");
-      return; // Arrêtez la fonction ici si un champ est vide
+      return;
     }
 
     let task = {
@@ -205,14 +153,22 @@ document.addEventListener("DOMContentLoaded", function () {
       time,
     };
 
-    // Envoi
     tasksArr.push(task);
-
-    // Rerender la liste des tâches
     renderTasks();
-
-    // Effacer les champs après l'ajout
     clear();
   });
-  // ...
+
+  function clear() {
+    titleElem.value = "";
+    descriptionElem.value = "";
+    dateElem.value = "";
+    timeElem.value = "";
+
+    dateElem.nextElementSibling.innerHTML = "Date";
+    timeElem.nextElementSibling.innerHTML = "Horaire";
+  }
+
+  const clearBtn = document.querySelector(".clear");
+
+  clearBtn.addEventListener("click", clear);
 });

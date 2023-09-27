@@ -132,6 +132,9 @@ document.addEventListener("DOMContentLoaded", function () {
     descriptionElem = document.getElementById("description"),
     dateElem = document.getElementById("date"),
     timeElem = document.getElementById("time");
+    const dateElem = document.querySelector('input[name="date"]');
+    const timeElem = document.querySelector('input[name="time"]');
+
 
   const addTaskButton = document.querySelector(".btn.add");
 
@@ -146,11 +149,11 @@ document.addEventListener("DOMContentLoaded", function () {
       return;
     }
 
-    let task = {
-      title,
-      description,
-      date,
-      time,
+   let task = {
+  title,
+  description,
+  date: dateElem.value,
+  time: timeElem.value,
     };
 
     tasksArr.push(task);

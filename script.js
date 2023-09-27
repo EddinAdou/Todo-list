@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", function () {
 const labels = document.querySelectorAll(".add-wrapper label");
 
 labels.forEach((label) => {
@@ -144,43 +145,74 @@ const addTaskForm = document.getElementById("add-task-form"),
   dateElem = document.getElementById("date"),
   timeElem = document.getElementById("time");
 
-addTaskForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  let title = titleElem.value,
-    description = descriptionElem.value,
-    date = dateElem.value,
-    time = timeElem.value;
-  //validation
-  if (title === "" || description === "" || date === "" || time === "") {
-    //if anything empty
-    alert("Veuillez remplir tous les champs");
-  }
+document.addEventListener("DOMContentLoaded", function () {
+  
 
-  let task = {
-    title,
-    description,
-    date,
-    time,
-  };
+  const addTaskButton = document.querySelector(".btn.add");
 
-  //envoi
-  tasksArr.push(task);
-  //rerender arr
-  renderTasks();
-  //effacer après ajout
-  clear();
+  addTaskButton.addEventListener("click", (e) => {
+    e.preventDefault(); // Empêche le formulaire de se soumettre
+
+    let title = titleElem.value,
+      description = descriptionElem.value,
+      date = dateElem.value,
+      time = timeElem.value;
+    
+    // Validation
+    if (title === "" || description === "" || date === "" || time === "") {
+      alert("Veuillez remplir tous les champs");
+      return; // Arrêtez la fonction ici si un champ est vide
+    }
+
+    let task = {
+      title,
+      description,
+      date,
+      time,
+    };
+
+    // Envoi
+    tasksArr.push(task);
+
+    // Rerender la liste des tâches
+    renderTasks();
+
+    // Effacer les champs après l'ajout
+    clear();
+  });
+  
+  const addTaskButton = document.querySelector(".btn.add");
+
+  addTaskButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    // Empêche le formulaire de se soumettre
+
+    let title = titleElem.value,
+      description = descriptionElem.value,
+      date = dateElem.value,
+      time = timeElem.value;
+    
+    // Validation
+    if (title === "" || description === "" || date === "" || time === "") {
+      alert("Veuillez remplir tous les champs");
+      return; // Arrêtez la fonction ici si un champ est vide
+    }
+
+    let task = {
+      title,
+      description,
+      date,
+      time,
+    };
+
+    // Envoi
+    tasksArr.push(task);
+
+    // Rerender la liste des tâches
+    renderTasks();
+
+    // Effacer les champs après l'ajout
+    clear();
+  });
+  // ...
 });
-
-function clear() {
-  titleElem.value = "";
-  descriptionElem.value = "";
-  dateElem.value = "";
-  timeElem.value = "";
-
-  dateElem.nextElementSibling.innerHTML = "Date";
-  timeElem.nextElementSibling.innerHTML = "Horaire";
-}
-//bouton effacer btn
-const clearBtn = document.querySelector(".clear");
-
-clearBtn.addEventListener("click", clear);

@@ -129,9 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const addTaskForm = document.getElementById("add-task-form"),
     titleElem = document.getElementById("title"),
-    descriptionElem = document.getElementById("description"),
-    dateElem = document.getElementById("date"),
-    timeElem = document.getElementById("time");
+    descriptionElem = document.getElementById("description");
     const dateElem = document.querySelector('input[name="date"]');
     const timeElem = document.querySelector('input[name="time"]');
 

@@ -105,14 +105,15 @@ document.addEventListener("DOMContentLoaded", function () {
   renderTasks();
 
   function checkExpired(task) {
-    let date = new Date(task.date);
-    let time = new Date(task.time);
-    let now = new Date();
-    if (date < now || time < now) {
-      return true;
-    }
-    return false;
+  let date = new Date(task.date);
+  let time = new Date(task.time);
+  let now = new Date();
+  if (date < now || time < now) {
+    return true;
   }
+  return false;
+}
+
 
   function deleteTasks() {
     const selectedTasks = document.querySelectorAll(".task.selected");
